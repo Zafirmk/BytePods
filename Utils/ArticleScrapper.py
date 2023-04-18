@@ -27,26 +27,30 @@ class ArticleScrapper:
 
     def getArticleLinks(self):
         self.all_ground_news_links = self.topStories + self.latestStories
-        for idx, story in enumerate(self.all_ground_news_links):
+        for story in self.all_ground_news_links:
             curr_story = requests.get(story)
             curr_soup = BeautifulSoup(curr_story.content, 'html.parser')
             center_article = curr_soup.find('button', string = 'Center')
-            
-            if center_article:
+            try:
                 article_link = center_article.find_parent('a')
-                self.article_links.append(article_link['href'])
-            else:
-                self.all_ground_news_links.pop(idx)
+            except:
+                article_link = {'href': None}
+            self.article_links.append(article_link['href'])
     
     def getNews(self):
         self.getTopStories()
         self.getLatestStories()
         self.getArticleLinks()
 
-        for idx, link in enumerate(self.article_links):
-            resp = requests.get(link)
-            content = self.extractor.get_content(resp.text)
-            if content:
-                self.all_news_content.append(content)
-            else:
-                self.all_ground_news_links.pop(idx)
+        for link in self.article_links:
+            try:
+                resp = requests.get(link)
+                content = self.extractor.get_content(resp.text)
+            except:
+                content = None
+            self.all_news_content.append(content)
+        
+        all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content)
+        filtered_list = [t for t in all_content if None not in t]
+
+        return filtered_list
