@@ -1,2 +1,7 @@
 beautifulsoup4==4.11.1
+boilerpy3==1.0.6
+openai==0.27.4
+protobuf==3.19.6
+python-dotenv==1.0.0
 Requests==2.28.2
+tqdm==4.64.0
