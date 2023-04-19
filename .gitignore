@@ -130,4 +130,7 @@ dmypy.json
 
 # Extra
 myfile.txt
-summaries.txt
+summaries_v1.txt
+summaries_v2.txt
+TTSCredentials.json
+Wavenet_125/
