@@ -2,6 +2,9 @@ import os
 import requests
 from bs4 import BeautifulSoup
 from boilerpy3 import extractors
+from google.cloud import storage
+from dotenv import load_dotenv
+load_dotenv()
 
 # Collect relevant top stories -> SummarizeNews
 class ArticleScrapper:
@@ -16,6 +19,9 @@ class ArticleScrapper:
         self.request = requests.get(self.base_url + '/interest/international')
         self.soup = BeautifulSoup(self.request.content, 'html.parser')
         self.extractor = extractors.ArticleExtractor()
+
+        self.bucket = storage.Client.from_service_account_json('TTSCredentials.json').bucket('neutralnews-audio-bucket')
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'TTSCredentials.json'
 
     def getTopStories(self):
         a_tags = self.soup.find_all('a', {'class': 'flex flex-row tablet:flex-col cursor-pointer gap-1_6 w-full'})
@@ -37,20 +43,31 @@ class ArticleScrapper:
                 article_link = {'href': None}
             self.article_links.append(article_link['href'])
     
+    def logNews(self, arr):
+        blob = self.bucket.blob('logs/log_article_scrapping.txt')
+        blob.upload_from_string('\n'.join([''.join(str(t)) for t in arr]))
+
+
     def getNews(self):
         self.getTopStories()
         self.getLatestStories()
         self.getArticleLinks()
 
+        status_codes = []
+
         for link in self.article_links:
             try:
                 resp = requests.get(link)
+                status_codes.append(resp.status_code)
                 content = self.extractor.get_content(resp.text)
             except:
                 content = None
+                status_codes.append(404)
             self.all_news_content.append(content)
         
-        all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content)
-        filtered_list = [t for t in all_content if None not in t]
+        all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content, status_codes)
+        filtered_list = [tup for tup in all_content if all(val is not None and val != '' for val in tup)]
+
+        self.logNews(filtered_list)
 
         return filtered_list
