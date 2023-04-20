@@ -9,7 +9,7 @@ import io
 # Use news summaries and TTS to generate mp3 podcast -> PublishPodcast
 class GeneratePodcast:
     
-    def __init__(self) -> None:
+    def __init__(self, summaries) -> None:
         self.tts_client = texttospeech.TextToSpeechClient()
         self.voice = texttospeech.VoiceSelectionParams(
             language_code="en-GB",
@@ -20,14 +20,25 @@ class GeneratePodcast:
             audio_encoding = texttospeech.AudioEncoding.MP3,
             speaking_rate = 1.25
         )
+        
         self.bucket_name = 'neutralnews-audio-bucket'
         self.bucket_client = storage.Client('TTSCredentials.json')
         self.bucket = self.bucket_client.bucket(self.bucket_name)
+        blobs = self.bucket.list_blobs(prefix='', delimiter='/')
+        mp3_blobs = [blob for blob in blobs if blob.name.endswith('.mp3')]
+
+        for blob in mp3_blobs:
+            blob.delete()
+
+        self.summaries = summaries
+
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'TTSCredentials.json'
+
+        self.generatePodcast()
     
-    def generateTTS(self, articles):
-        for idx, article in tqdm(enumerate(articles)):
-            synthesis_input = texttospeech.SynthesisInput(text = article)
+    def generateTTS(self):
+        for idx, summary in tqdm(enumerate(self.summaries)):
+            synthesis_input = texttospeech.SynthesisInput(text = summary)
             response = self.tts_client.synthesize_speech(
                 input = synthesis_input,
                 voice = self.voice,
@@ -72,3 +83,7 @@ class GeneratePodcast:
 
         output_blob = self.bucket.blob("podcast.mp3")
         output_blob.upload_from_string(mp3_data.getvalue(), content_type = "audio/mpeg")
+
+    def generatePodcast(self):
+        self.generateTTS()
+        self.combineTTS()
