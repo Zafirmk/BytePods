@@ -22,7 +22,7 @@ class PublishPodcast:
             category = Category("News", "Daily News"),
             authors = [Person("Zafir Khalid", "zafirmk0@gmail.com")],
             owner = Person("Zafir Khalid", "zafirmk0@gmail.com"),
-            image = ""
+            image = "https://storage.googleapis.com/neutralnews-audio-bucket/podcastlogo.png"
         )
         self.podcast.set_generator('https://simplecast.com', exclude_podgen=True)
 
