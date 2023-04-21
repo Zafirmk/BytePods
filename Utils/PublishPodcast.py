@@ -15,7 +15,7 @@ class PublishPodcast:
 
         self.podcast = Podcast(
             name = "NewsBytes",
-            description = "NewsBytes brings the world to you in just 5 minutes! Don't have time to sift through endless articles? Tune in daily to stay ahead on breaking news and global headlines, we deliver the news you need to know.",
+            description = "NewsBytes brings the world to you in just 5 minutes! Don't have time to sift through endless articles? Tune in daily to stay ahead on breaking news and global headlines, we deliver the news you need to know. Sourced only from neutral outlets.",
             website = "https://storage.googleapis.com/neutralnews-audio-bucket/rss.xml",
             explicit = False,
             language = "en-US",
