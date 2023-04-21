@@ -67,6 +67,7 @@ class ArticleScrapper:
         
         all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content, status_codes)
         filtered_list = [tup for tup in all_content if all(val is not None and val != '' for val in tup)]
+        filtered_list = list(filter(lambda x: x[3] == 200, filtered_list))
 
         self.logNews(filtered_list)
 
