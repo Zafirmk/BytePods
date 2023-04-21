@@ -1,6 +1,7 @@
 from Utils.ArticleScrapper import ArticleScrapper
 from Utils.SummarizeNews import SummarizeNews
 from Utils.GeneratePodcast import GeneratePodcast
+from Utils.PublishPodcast import PublishPodcast
 
 if __name__ == '__main__':
     news_reports = ArticleScrapper('http://www.ground.news').getNews()
@@ -10,3 +11,5 @@ if __name__ == '__main__':
     print('Summarizer Done\n')
     GeneratePodcast(summaries.getSummaries())
     print('Podcast Generated\n')
+    PublishPodcast()
+    print('Podcast Published\n')
