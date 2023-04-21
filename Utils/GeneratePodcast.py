@@ -85,15 +85,7 @@ class GeneratePodcast:
         output_blob.upload_from_string(mp3_data.getvalue(), content_type = "audio/mpeg")
         output_blob.make_public()
 
-
-    def generatePodcastNumber(self):
-        blob = self.bucket.blob('podcast_number.txt')
-        file_content = blob.download_as_string().decode("utf-8")
-        number = int(file_content.strip()) + 1
-        blob.upload_from_string(str(number))
-
     def generatePodcast(self):
         self.generateTTS()
         self.combineTTS()
-        self.generatePodcastNumber()
     
