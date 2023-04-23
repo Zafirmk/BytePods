@@ -130,3 +130,5 @@ dmypy.json
 
 # Extra
 TTSCredentials.json
+config.json
+G_58000.pth
