@@ -52,3 +52,6 @@ class PublishPodcast:
         self.bucket.blob('rss.xml').upload_from_string(self.podcast.rss_str(), content_type='application/xml')
         self.bucket.blob('rss.xml').make_public()
         self.bucket.blob('podcast_number.txt').upload_from_string(str(int(self.podcast_number) + 1))
+
+# Edit so that it takes the media from google drive instead of bucket.
+# Edit so that it appends to RSS feed everytime.

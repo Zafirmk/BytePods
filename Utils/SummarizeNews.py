@@ -59,6 +59,7 @@ class SummarizeNews:
             response = "Welcome to today's episode! Have a nice day ahead!"
             blob = self.bucket.blob('description.txt')
             blob.upload_from_string(response)
+            blob.make_public()
 
     def getSummaries(self):
         return self.summaries
