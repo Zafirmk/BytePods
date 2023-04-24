@@ -12,7 +12,7 @@ class SummarizeNews:
     def __init__(self, articles) -> None:
         self.summaries = []
         self.articles = articles
-        self.bucket = storage.Client.from_service_account_json('TTSCredentials.json').bucket('neutralnews-audio-bucket')
+        self.bucket = storage.Client.from_service_account_json('TTSCredentials.json').bucket(os.getenv('BUCKET_NAME'))
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'TTSCredentials.json'
 
     def summarizeArticles(self):
@@ -52,12 +52,13 @@ class SummarizeNews:
                 temperature = 0.0
             )
 
-            blob = self.bucket.blob('description.txt')
+            blob = self.bucket.blob('podcast_contents/description.txt')
             blob.upload_from_string(response["choices"][0]["message"]["content"])
+            blob.make_public()
 
         except:
             response = "Welcome to today's episode! Have a nice day ahead!"
-            blob = self.bucket.blob('description.txt')
+            blob = self.bucket.blob('podcast_contents/description.txt')
             blob.upload_from_string(response)
             blob.make_public()
 
