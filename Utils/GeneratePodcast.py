@@ -8,7 +8,6 @@ from pydub import AudioSegment
 from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from google.cloud import texttospeech, storage
-from googleapiclient.http import MediaIoBaseUpload
 
 load_dotenv()
 
@@ -29,9 +28,8 @@ class GeneratePodcast:
             speaking_rate = 1.15
         )
         
-        self.bucket_name = 'neutralnews-audio-bucket'
         self.bucket_client = storage.Client('TTSCredentials.json')
-        self.bucket = self.bucket_client.bucket(self.bucket_name)
+        self.bucket = self.bucket_client.bucket(os.getenv('BUCKET_NAME'))
         blobs = self.bucket.list_blobs(prefix='individual_summaries/')
         mp3_blobs = [blob for blob in blobs if blob.name.endswith('.mp3')]
 
@@ -39,7 +37,9 @@ class GeneratePodcast:
             blob.delete()
 
         self.summaries = summaries
-        self.gdrive = build('drive', 'v3')
+        self.podcast_number = self.bucket.blob('podcast_contents/podcast_number.txt').download_as_string().decode("utf-8").strip()
+        self.episodeName = ""
+
         self.generatePodcast()
     
     def generateTTS(self):
@@ -121,17 +121,23 @@ class GeneratePodcast:
         self.savePodcast(mp3_data)
 
     def savePodcast(self, podcast_mp3):
-        # Save to latest episode to GCP bucket & backup on to GDrive
+        # Save to latest episode to GCP bucket
+    
+        if (len(str(self.podcast_number)) == 1):
+            pod_num = f'00{self.podcast_number}'
+        elif (len(str(self.podcast_number)) == 2):
+            pod_num = f'0{self.podcast_number}'
         
-        self.bucket.blob("podcast.mp3").upload_from_string(podcast_mp3.getvalue(), content_type = "audio/mpeg")
-        self.bucket.blob("podcast.mp3").make_public()
+        self.episodeName = f"NewsByte: {pod_num} | Global Date: {datetime.today().strftime('%d-%m-%Y')} | Global Week: {datetime.today().isocalendar()[1]}"
 
-        gdrive_metadata = {'name': f"NewsByte: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", 'parents':['1mCOwiys0019g-cwOqJMMuwzNcgmYPJC3']}
-        media = MediaIoBaseUpload(io.BytesIO(self.bucket.blob('podcast.mp3').download_as_bytes()), mimetype='audio/mpeg')
-        self.gdrive.files().create(body=gdrive_metadata, media_body=media, fields='id').execute()
+        self.bucket.blob(f"podcasts/{self.episodeName}.mp3").upload_from_string(podcast_mp3.getvalue(), content_type = "audio/mpeg")
+        self.bucket.blob(f"podcasts/{self.episodeName}.mp3").make_public()
+
+        self.bucket.blob('podcast_contents/podcast_number.txt').upload_from_string(str(int(self.podcast_number) + 1))
+
+    def getEpisodeName(self):
+        return (self.episodeName + '.mp3')
 
     def generatePodcast(self):
         self.generateTTS()
         self.combineTTS()
-
-# Edit so that the GDrive upload is without a service account
