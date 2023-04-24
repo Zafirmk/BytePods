@@ -11,10 +11,10 @@ if __name__ == '__main__':
     summaries = SummarizeNews(news_reports)
     summaries.summarizeArticles()
     print('Summarizer Done\n')
-    GeneratePodcast(summaries.getSummaries())
+    episode_name = GeneratePodcast(summaries.getSummaries()).getEpisodeName()
     print('Podcast Generated\n')
-    # PublishPodcast()
-    # print('Podcast Published\n')
+    PublishPodcast(episode_name)
+    print('Podcast Published\n')
     t1 = time.time()
 
     print(f'\nTime Taken: {t1 - t0}')
