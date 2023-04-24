@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from boilerpy3 import extractors
 from google.cloud import storage
 from dotenv import load_dotenv
+from langdetect import detect
 load_dotenv()
 
 # Collect relevant top stories -> SummarizeNews
@@ -20,7 +21,7 @@ class ArticleScrapper:
         self.soup = BeautifulSoup(self.request.content, 'html.parser')
         self.extractor = extractors.ArticleExtractor()
 
-        self.bucket = storage.Client.from_service_account_json('TTSCredentials.json').bucket('neutralnews-audio-bucket')
+        self.bucket = storage.Client.from_service_account_json('TTSCredentials.json').bucket(os.getenv('BUCKET_NAME'))
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'TTSCredentials.json'
 
     def getTopStories(self):
@@ -54,21 +55,37 @@ class ArticleScrapper:
         self.getArticleLinks()
 
         status_codes = []
+        languages = []
 
         for link in self.article_links:
             try:
                 resp = requests.get(link)
                 status_codes.append(resp.status_code)
                 content = self.extractor.get_content(resp.text)
+                if self.isEnglish(content):
+                    languages.append('en')
+                else:
+                    languages.append('n/a')
             except:
                 content = None
                 status_codes.append(404)
             self.all_news_content.append(content)
         
-        all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content, status_codes)
+        all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content, status_codes, languages)
         filtered_list = [tup for tup in all_content if all(val is not None and val != '' for val in tup)]
         filtered_list = list(filter(lambda x: x[3] == 200, filtered_list))
+        filtered_list = list(filter(lambda x: x[4] == 'en', filtered_list))
 
         self.logNews(filtered_list)
 
         return filtered_list
+
+    def isEnglish(self, text):
+        try:
+            lang = detect(text)
+            if lang == 'en':
+                return True
+            else:
+                return False
+        except:
+            return False
