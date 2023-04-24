@@ -1,57 +1,83 @@
+from mutagen.mp3 import MP3
+import io
 from podgen import Podcast, Episode, Media, Category, Person
-import datetime
+import feedparser
+import requests
+from datetime import datetime
+import datetime as dt
+import pytz
 import os
 from google.cloud import storage
 from dotenv import load_dotenv
+from pydub import AudioSegment
+from pprint import pprint
 load_dotenv()
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'TTSCredentials.json'
 
 # Publish the generated mp3 podcast file
 class PublishPodcast:
-    def __init__(self) -> None:
+    def __init__(self, episodeName) -> None:
 
-        self.bucket = storage.Client.from_service_account_json('TTSCredentials.json').bucket('neutralnews-audio-bucket')
+        self.bucket = storage.Client.from_service_account_json('TTSCredentials.json').bucket(os.getenv('BUCKET_NAME'))
+        temp = self.bucket.blob('NewsByte_RSS.xml')
+        temp.reload()
+        self.podcast_xml = feedparser.parse(temp.download_as_string())
+        self.episodeName = episodeName
+        self.tz = pytz.timezone('America/New_York')
 
         self.podcast = Podcast(
-            name = "NewsBytes",
-            description = "NewsBytes brings the world to you in just 5 minutes! Don't have time to sift through endless articles? Tune in daily to stay ahead on breaking news and global headlines, we deliver the news you need to know. Sourced only from neutral outlets.",
-            website = "https://storage.googleapis.com/neutralnews-audio-bucket/rss.xml",
+            name = self.podcast_xml.feed.title,
+            description = self.podcast_xml.feed.subtitle,
+            website = self.podcast_xml.feed.link,
             explicit = False,
-            language = "en-US",
-            category = Category("News", "Daily News"),
-            authors = [Person("Zafir Khalid", "zafirmk0@gmail.com")],
-            owner = Person("Zafir Khalid", "zafirmk0@gmail.com"),
-            image = "https://storage.googleapis.com/neutralnews-audio-bucket/podcastlogo.png"
+            language = self.podcast_xml.feed.language,
+            category = Category(self.podcast_xml.feed.tags[0].term, self.podcast_xml.feed.tags[1].term),
+            authors = [Person(self.podcast_xml.feed.publisher_detail.name, self.podcast_xml.feed.publisher_detail.email)],
+            owner = Person(self.podcast_xml.feed.publisher_detail.name, self.podcast_xml.feed.publisher_detail.email),
+            image = self.podcast_xml.feed.image.href
         )
 
-        self.podcast_blob = self.bucket.blob('podcast.mp3')
-        self.podcast_blob.reload()
+        for episode in self.podcast_xml.entries:
+            self.podcast.episodes += [
+                Episode(
+                    title = episode.title,
+                    media = Media(episode.links[0].href, size = episode.links[0].length, type = episode.links[0].type),
+                    subtitle = episode.subtitle,
+                    summary = episode.summary,
+                    publication_date = episode.published
+                )
+            ]
+        
+        self.addNewEpisode()
+        rss_string = self.podcast.rss_str()
+        rss_string = self.insertExtraTags(rss_string)
 
-        self.podcast_size = self.podcast_blob.size
+        self.bucket.blob('NewsByte_RSS.xml').cache_control = 'public, max-age=60'
+        self.bucket.blob('NewsByte_RSS.xml').patch()
+        self.bucket.blob('NewsByte_RSS.xml').upload_from_string(rss_string, content_type='application/xml')
+        self.bucket.blob('NewsByte_RSS.xml').make_public()
+    
+    def insertExtraTags(self, rss_string):
+        index = rss_string.find('<item>')
+        return (rss_string[:index] + '<itunes:type>episodic</itunes:type>\n' + rss_string[index:])
 
-        self.description = self.bucket.blob('description.txt').download_as_string()
-        self.podcast_number = self.bucket.blob('podcast_number.txt').download_as_string().decode("utf-8").strip()
 
-        if (len(str(self.podcast_number)) == 1):
-            pod_num = f'00{self.podcast_number}'
-        elif (len(str(self.podcast_number)) == 2):
-            pod_num = f'0{self.podcast_number}'
+    def getEpisodeMetaData(self):
+        for blob in self.bucket.list_blobs(prefix = 'podcasts/'):
+            if blob.name.split('/')[1] == self.episodeName:
+                # duration = AudioSegment.from_file(io.BytesIO(self.bucket.blob(blob.name).download_as_string()))
+                return(blob.public_url, blob.size)
             
+    def addNewEpisode(self):
+        metaData = self.getEpisodeMetaData()
+
         self.podcast.episodes += [
             Episode(
-                title = f"NewsByte: {pod_num} - Global Date: {datetime.date.today().strftime('%d/%m/%Y')} - Global Week: {datetime.date.today().isocalendar()[1]}",
-                media = Media("https://storage.googleapis.com/neutralnews-audio-bucket/podcast.mp3", self.podcast_size),
-                subtitle = self.description,
-                summary = self.description
+                title = self.episodeName[:-4],
+                media = Media(metaData[0], size = metaData[1]),
+                subtitle = self.bucket.blob('podcast_contents/description.txt').download_as_string().decode(),
+                summary = self.bucket.blob('podcast_contents/description.txt').download_as_string().decode(),
+                publication_date = self.tz.fromutc(datetime.utcnow()).strftime('%d/%m/%Y %H:%M:%S %z')
             )
         ]
-
-        self.bucket.blob('rss.xml').cache_control = 'public, max-age=60'
-        self.bucket.blob('rss.xml').patch()
-        self.bucket.blob('rss.xml').upload_from_string(self.podcast.rss_str(), content_type='application/xml')
-        self.bucket.blob('rss.xml').make_public()
-        self.bucket.blob('podcast_number.txt').upload_from_string(str(int(self.podcast_number) + 1))
-
-# Edit so that it takes the media from google drive instead of bucket.
-# Edit so that it appends to RSS feed everytime.
