@@ -4,9 +4,21 @@
 </p>
 
 ---
-<p align="center">
-  <a href="https://open.spotify.com/show/1Q5FjHPnbtyz8shYBqqyXC"><img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/spotify-podcast-badge-blk-grn-330x80.png"></a>
-</p>
+<div align="center">
+  <div style="display: flex; justify-content: center;">
+    <a href="https://open.spotify.com/show/1Q5FjHPnbtyz8shYBqqyXC" style="margin: 0px 10px;">
+      <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_spotify.png" style="width: 220px; height: 53px;">
+    </a>
+    <a href="https://open.spotify.com/show/1Q5FjHPnbtyz8shYBqqyXC" style="margin: 0px 10px;">
+      <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_apple.svg" style="width: 220px; height: 53px;">
+    </a>
+    <a href="#" style="margin: 0px 10px;">
+      <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_google.png" style="width: 220px; height: 53px;">
+    </a>
+  </div>
+</div>
+
+
 
 [![Pylint](https://github.com/Zafirmk/NewsBytes/actions/workflows/pylint.yml/badge.svg)](https://github.com/Zafirmk/NewsBytes/actions/workflows/pylint.yml)
 
