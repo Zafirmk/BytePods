@@ -1,30 +1,33 @@
-from mutagen.mp3 import MP3
-import io
-from podgen import Podcast, Episode, Media, Category, Person
-import feedparser
-import requests
-from datetime import datetime
-import datetime as dt
-import pytz
+# pylint: disable=C0301
+# pylint: disable=R0902
+# pylint: disable=W0702
+# pylint: disable=C0103
+"""
+PodGen implementation to generate RSS feed for podcast.
+"""
 import os
+from datetime import datetime
+import feedparser
+import pytz
+from podgen import Podcast, Episode, Media, Category, Person
 from google.cloud import storage
 from dotenv import load_dotenv
-from pydub import AudioSegment
-from pprint import pprint
 load_dotenv()
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'TTSCredentials.json'
 
 # Publish the generated mp3 podcast file
 class PublishPodcast:
-    def __init__(self, episodeName) -> None:
-
+    """
+    PublishPodcast object responsible for publishing podcast episode.
+    """
+    def __init__(self, episode_name) -> None:
         self.bucket = storage.Client.from_service_account_json('TTSCredentials.json').bucket(os.getenv('BUCKET_NAME'))
         temp = self.bucket.blob('NewsByte_RSS.xml')
         temp.reload()
         self.podcast_xml = feedparser.parse(temp.download_as_string())
-        self.episodeName = episodeName
-        self.tz = pytz.timezone('America/New_York')
+        self.episode_name = episode_name
+        self.time_zone = pytz.timezone('America/New_York')
 
         self.podcast = Podcast(
             name = self.podcast_xml.feed.title,
@@ -48,36 +51,43 @@ class PublishPodcast:
                     publication_date = episode.published
                 )
             ]
-        
-        self.addNewEpisode()
+
+        self.add_new_episode()
         rss_string = self.podcast.rss_str()
-        rss_string = self.insertExtraTags(rss_string)
+        rss_string = self.insert_extra_tags(rss_string)
 
         self.bucket.blob('NewsByte_RSS.xml').cache_control = 'public, max-age=60'
         self.bucket.blob('NewsByte_RSS.xml').patch()
         self.bucket.blob('NewsByte_RSS.xml').upload_from_string(rss_string, content_type='application/xml')
         self.bucket.blob('NewsByte_RSS.xml').make_public()
-    
-    def insertExtraTags(self, rss_string):
+
+    def insert_extra_tags(self, rss_string):
+        """
+        Add essential XML tags not included in podgen.
+        """
         index = rss_string.find('<item>')
-        return (rss_string[:index] + '<itunes:type>episodic</itunes:type>\n' + rss_string[index:])
+        return rss_string[:index] + '<itunes:type>episodic</itunes:type>\n' + rss_string[index:]
 
-
-    def getEpisodeMetaData(self):
+    def get_episode_meta_data(self):
+        """
+        Get media meta data for current episode
+        """
         for blob in self.bucket.list_blobs(prefix = 'podcasts/'):
-            if blob.name.split('/')[1] == self.episodeName:
-                # duration = AudioSegment.from_file(io.BytesIO(self.bucket.blob(blob.name).download_as_string()))
-                return(blob.public_url, blob.size)
-            
-    def addNewEpisode(self):
-        metaData = self.getEpisodeMetaData()
+            if blob.name.split('/')[1] == self.episode_name:
+                return (blob.public_url, blob.size)
+        return None
 
+    def add_new_episode(self):
+        """
+        Add new episode into self.podcast object
+        """
+        meta_data = self.get_episode_meta_data()
         self.podcast.episodes += [
             Episode(
-                title = self.episodeName[:-4],
-                media = Media(metaData[0], size = metaData[1]),
+                title = self.episode_name[:-4],
+                media = Media(meta_data[0], size = meta_data[1]),
                 subtitle = self.bucket.blob('podcast_contents/description.txt').download_as_string().decode(),
                 summary = self.bucket.blob('podcast_contents/description.txt').download_as_string().decode(),
-                publication_date = self.tz.fromutc(datetime.utcnow()).strftime('%d/%m/%Y %H:%M:%S %z')
+                publication_date = self.time_zone.fromutc(datetime.utcnow()).strftime('%d/%m/%Y %H:%M:%S %z')
             )
         ]

@@ -1,19 +1,28 @@
+# pylint: disable=C0301
+# pylint: disable=R0902
+# pylint: disable=W0702
+# pylint: disable=R0914
+# pylint: disable=C0103
+"""
+Podcast mp3 generation using PyDub and so-vits-svc
+"""
 import os
 import io
 import shutil
 import subprocess
-from tqdm import tqdm
 from datetime import datetime
+from tqdm import tqdm
 from pydub import AudioSegment
 from dotenv import load_dotenv
-from googleapiclient.discovery import build
 from google.cloud import texttospeech, storage
 
 load_dotenv()
 
 # Use news summaries and TTS to generate mp3 podcast -> PublishPodcast
 class GeneratePodcast:
-    
+    """
+    GeneratePodcast object responsible for creating .mp3 file of podcast episode.
+    """
     def __init__(self, summaries) -> None:
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'TTSCredentials.json'
         os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
@@ -27,7 +36,6 @@ class GeneratePodcast:
             audio_encoding = texttospeech.AudioEncoding.MP3,
             speaking_rate = 1.15
         )
-        
         self.bucket_client = storage.Client('TTSCredentials.json')
         self.bucket = self.bucket_client.bucket(os.getenv('BUCKET_NAME'))
         blobs = self.bucket.list_blobs(prefix='individual_summaries/')
@@ -38,11 +46,14 @@ class GeneratePodcast:
 
         self.summaries = summaries
         self.podcast_number = self.bucket.blob('podcast_contents/podcast_number.txt').download_as_string().decode("utf-8").strip()
-        self.episodeName = ""
+        self.episode_name = ""
 
-        self.generatePodcast()
-    
-    def generateTTS(self):
+        self.generate_podcast()
+
+    def generate_tts(self):
+        """
+        Google TTS API call for all summaries.
+        """
         for idx, summary in tqdm(enumerate(self.summaries)):
             synthesis_input = texttospeech.SynthesisInput(text = summary)
             response = self.tts_client.synthesize_speech(
@@ -53,10 +64,13 @@ class GeneratePodcast:
 
             blob = self.bucket.blob(f'individual_summaries/output_{idx}.mp3')
             blob.upload_from_string(response.audio_content, content_type = 'audio/mpeg')
-            
-        self.naturalizeTTS()
 
-    def naturalizeTTS(self):
+        self.naturalize_tts()
+
+    def naturalize_tts(self):
+        """
+        so-vits-svc CLI command for all TTS responses from Google TTS API.
+        """
 
         BASE_CMD = 'svc'
         MODEL_PATH = 'G_58000.pth'
@@ -65,7 +79,7 @@ class GeneratePodcast:
 
         if not os.path.exists("tmp"):
             os.mkdir("tmp")
-        
+
         blobs = self.bucket.list_blobs(prefix='individual_summaries/')
         for blob in blobs:
             if blob.name.endswith(".mp3"):
@@ -77,17 +91,19 @@ class GeneratePodcast:
 
         for filename in tqdm(sorted(os.listdir('tmp'))):
             cmd_args = [BASE_CMD, 'infer', f'tmp/{filename}', '-m', MODEL_PATH, '-c', CONFIG_PATH, '-o', f'{OUTPUT_PATH}{filename}', '-na']
-            subprocess.run(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        
+            subprocess.run(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+
         for filename in sorted(os.listdir('tmp_output')):
             blob = self.bucket.blob(f'individual_summaries/{filename}')
             blob.upload_from_filename(os.path.join('tmp_output', filename), content_type = 'audio/mpeg')
-        
+
         shutil.rmtree('tmp')
         shutil.rmtree('tmp_output')
 
-    def combineTTS(self):
-
+    def combine_tts(self):
+        """
+        Combine all TTS clips with background audio.
+        """
         INTRO_DB_REDUCTION = 10
         SEGMENT_CHANGE_DB_REDUCTION = 15
         BACKGROUND_SEGMENT_DB_REDUCTION = 20
@@ -118,26 +134,34 @@ class GeneratePodcast:
         mp3_data = io.BytesIO()
         output_audio.export(mp3_data, format="mp3")
 
-        self.savePodcast(mp3_data)
+        self.save_podcast(mp3_data)
 
-    def savePodcast(self, podcast_mp3):
-        # Save to latest episode to GCP bucket
-    
-        if (len(str(self.podcast_number)) == 1):
+    def save_podcast(self, podcast_mp3):
+        """
+        Save to latest episode to GCP bucket.
+        """
+        pod_num = ''
+        if len(str(self.podcast_number)) == 1:
             pod_num = f'00{self.podcast_number}'
-        elif (len(str(self.podcast_number)) == 2):
+        elif len(str(self.podcast_number)) == 2:
             pod_num = f'0{self.podcast_number}'
-        
-        self.episodeName = f"NewsByte: {pod_num} | Global Date: {datetime.today().strftime('%d-%m-%Y')} | Global Week: {datetime.today().isocalendar()[1]}"
 
-        self.bucket.blob(f"podcasts/{self.episodeName}.mp3").upload_from_string(podcast_mp3.getvalue(), content_type = "audio/mpeg")
-        self.bucket.blob(f"podcasts/{self.episodeName}.mp3").make_public()
+        self.episode_name = f"NewsByte: {pod_num} | Global Date: {datetime.today().strftime('%d-%m-%Y')} | Global Week: {datetime.today().isocalendar()[1]}"
+
+        self.bucket.blob(f"podcasts/{self.episode_name}.mp3").upload_from_string(podcast_mp3.getvalue(), content_type = "audio/mpeg")
+        self.bucket.blob(f"podcasts/{self.episode_name}.mp3").make_public()
 
         self.bucket.blob('podcast_contents/podcast_number.txt').upload_from_string(str(int(self.podcast_number) + 1))
 
-    def getEpisodeName(self):
-        return (self.episodeName + '.mp3')
+    def get_episode_name(self):
+        """
+        Getter for self.episode_name with type appended.
+        """
+        return self.episode_name + '.mp3'
 
-    def generatePodcast(self):
-        self.generateTTS()
-        self.combineTTS()
+    def generate_podcast(self):
+        """
+        Main function of class called in __init__.
+        """
+        self.generate_tts()
+        self.combine_tts()
