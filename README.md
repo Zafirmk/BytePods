@@ -8,6 +8,7 @@
   <a href="https://open.spotify.com/show/1Q5FjHPnbtyz8shYBqqyXC"><img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/spotify-podcast-badge-blk-grn-330x80.png"></a>
 </p>
 
+[![Pylint](https://github.com/Zafirmk/NewsBytes/actions/workflows/pylint.yml/badge.svg)](https://github.com/Zafirmk/NewsBytes/actions/workflows/pylint.yml)
 
 <!-- ABOUT THE PROJECT -->
 ## About 🔰
