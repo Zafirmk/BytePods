@@ -1,11 +1,15 @@
+"""
+Entry point of NewsBytes pipeline.
+"""
 from Utils.ArticleScrapper import ArticleScrapper
 from Utils.SummarizeNews import SummarizeNews
 from Utils.GeneratePodcast import GeneratePodcast
 from Utils.PublishPodcast import PublishPodcast
-import time
 
-if __name__ == '__main__':
-    t0 = time.time()
+def main():
+    """
+    Main function that executes the NewsBytes pipeline.
+    """
     news_reports = ArticleScrapper('http://www.ground.news').getNews()
     print('Article Scrapper Done\n')
     summaries = SummarizeNews(news_reports)
@@ -15,6 +19,6 @@ if __name__ == '__main__':
     print('Podcast Generated\n')
     PublishPodcast(episode_name)
     print('Podcast Published\n')
-    t1 = time.time()
 
-    print(f'\nTime Taken: {t1 - t0}')
+if __name__ == '__main__':
+    main()
