@@ -10,7 +10,7 @@
     <a href="https://open.spotify.com/show/1Q5FjHPnbtyz8shYBqqyXC" style="margin: 0px 10px; text-decoration: none;">
       <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_spotify.png" style="width: 220px; height: 53px;">
     </a>
-    <a href="https://open.spotify.com/show/1Q5FjHPnbtyz8shYBqqyXC" style="margin: 0px 10px; text-decoration: none;">
+    <a href="https://podcasts.apple.com/us/podcast/newsbytes/id1684407002" style="margin: 0px 10px; text-decoration: none;">
       <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_apple.svg" style="width: 220px; height: 53px;">
     </a>
     <a href="#" style="margin: 0px 10px; text-decoration: none;">
