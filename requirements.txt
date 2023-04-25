@@ -12,3 +12,4 @@ Requests==2.28.2
 tqdm==4.64.0
 google-cloud-storage==2.8.0
 google-cloud-texttospeech==2.14.1
+so-vits-svc-fork==3.10.5
