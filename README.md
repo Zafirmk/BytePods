@@ -16,6 +16,9 @@
     <a href="#" style="margin: 0px 10px; text-decoration: none;">
       <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_google.png" style="width: 220px; height: 53px;">
     </a>
+    <a href="https://player.fm/series/newsbytes" style="margin: 0px 10px; text-decoration: none;">
+      <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_playerfm.png" style="width: 220px; height: 53px;">
+    </a>
   </div>
 </div>
 
