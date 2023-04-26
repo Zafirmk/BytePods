@@ -91,6 +91,18 @@ Example: ``./G_58000.pth`` and ``./config.json``
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- POTENTIAL IMPROVEMENTS -->
+## Potential Improvements ⚙️
+
+- [ ] Tweak TTS naturalization
+    - Current version may encounter voice cracks
+    - See NewsByte: 003
+- [ ] Include news from subtopics (Finance, Sports etc.)
+- [ ] Improve web scrapping model
+    - Current version drops certain news articles if news can not be extracted via BoilerPy3
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 <!-- CONTRIBUTING -->
 ## Contributing 📄
