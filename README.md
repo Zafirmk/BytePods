@@ -37,6 +37,7 @@ NewsBytes is an AI generated spotify podcast that covers global headlines in rou
 
 ### Labels 🏷
 [![Pylint](https://github.com/Zafirmk/NewsBytes/actions/workflows/pylint.yml/badge.svg)](https://github.com/Zafirmk/NewsBytes/actions/workflows/pylint.yml)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Zafirmk/NewsBytes?color=green&label=Latest%20Release)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
