@@ -37,7 +37,9 @@ NewsBytes is an AI generated spotify podcast that covers global headlines in rou
 
 ### Labels 🏷
 [![Pylint](https://github.com/Zafirmk/NewsBytes/actions/workflows/pylint.yml/badge.svg)](https://github.com/Zafirmk/NewsBytes/actions/workflows/pylint.yml)
-
+<a href="https://github.com/Zafirmk/NewsBytes/releases/tag/v1.0">
+    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/Zafirmk/NewsBytes?color=green&label=Latest%20Release">
+</a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -88,6 +90,18 @@ Once the API keys are setup, you will need a model and config file corresponding
 Place both the .pth model file and config.json in the root directory.
 Example: ``./G_58000.pth`` and ``./config.json``
 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- POTENTIAL IMPROVEMENTS -->
+## Potential Improvements ⚙️
+
+- [ ] Tweak TTS naturalization
+    - Current version may encounter voice cracks
+    - See NewsByte: 003
+- [ ] Include news from subtopics (Finance, Sports etc.)
+- [ ] Improve web scrapping model
+    - Current version drops certain news articles if news can not be extracted via BoilerPy3
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
