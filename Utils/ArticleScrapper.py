@@ -83,8 +83,8 @@ class ArticleScrapper:
 
         for link in self.article_links:
             try:
-                resp = requests.get(link, timeout = 10)
-                status_codes.append(resp.status_code)
+                if not link: status_codes.append(404)
+                resp = requests.get(link)
                 content = self.extractor.get_content(resp.text)
                 if self.is_english(content):
                     languages.append('en')
@@ -92,8 +92,9 @@ class ArticleScrapper:
                     languages.append('n/a')
             except:
                 content = None
-                status_codes.append(404)
+                languages.append('n/a')
             self.all_news_content.append(content)
+            if link: status_codes.append(resp.status_code)
         all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content, status_codes, languages)
         filtered_list = [tup for tup in all_content if all(val is not None and val != '' for val in tup)]
         filtered_list = list(filter(lambda x: x[3] == 200, filtered_list))
