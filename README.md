@@ -98,14 +98,14 @@ Example: ``./G_58000.pth`` and ``./config.json``
 <!-- POTENTIAL IMPROVEMENTS -->
 ## Potential Improvements ⚙️
 
-- [ ] Tweak TTS naturalization
+- [ ] Tweak TTS naturalization (Use [Suno Bark](https://github.com/suno-ai/bark)?)
     - Current version may encounter voice cracks
     - See NewsByte: 003
 - [ ] Include news from subtopics (Finance, Sports etc.)
 - [ ] Improve web scrapping model
     - Current version drops certain news articles if news can not be extracted via BoilerPy3
 - [X] Have ``so-vits-svc`` downloaded during runtime, rather than storing 500MB+ model locally
-- [ ] Ensure two consecutive podcasts do not repeat news
+- [X] Ensure two consecutive podcasts do not repeat news
     - See NewsByte: 005 and NewsByte: 006
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
