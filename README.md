@@ -102,7 +102,7 @@ MODEL_CONFIG = https://huggingface.co/xgdhdh/so-vits-svc-4.0/raw/main/Saber/conf
 <!-- POTENTIAL IMPROVEMENTS -->
 ## Potential Improvements ⚙️
 
-- [ ] Tweak TTS naturalization (Use [Suno Bark](https://github.com/suno-ai/bark)?)
+- [ ] Tweak TTS naturalization
     - Current version may encounter voice cracks
     - See NewsByte: 003
 - [ ] Include news from subtopics (Finance, Sports etc.)
