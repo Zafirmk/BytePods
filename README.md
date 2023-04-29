@@ -77,6 +77,8 @@ OPENAI_PROMPT = OpenAI prompt to summarize news articles
 OPENAI_DESCRIPTION_PROMPT = OpenAI prompt to create episode description
 GOOGLE_APPLICATION_CREDENTIALS = Path to GCP credentials json
 BUCKET_NAME = GCP bucket name
+MODEL_URL = Download link to so-vits-svc model (.pth file)
+MODEL_CONFIG = Download link to so-vits-svc model config (.json file)
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
