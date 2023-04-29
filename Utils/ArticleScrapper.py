@@ -2,6 +2,8 @@
 # pylint: disable=R0902
 # pylint: disable=W0702
 # pylint: disable=C0103
+# pylint: disable=C0321
+# pylint: disable=W3101
 """
 BeautifulSoup scrapper to get articles.
 """
