@@ -8,6 +8,7 @@
 BeautifulSoup scrapper to get articles.
 """
 import os
+import re
 import requests
 from bs4 import BeautifulSoup
 from boilerpy3 import extractors
@@ -98,7 +99,9 @@ class ArticleScrapper:
             self.all_news_content.append(content)
             if link: status_codes.append(resp.status_code)
         all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content, status_codes, languages)
+        prev_news = self.previous_news()
         filtered_list = [tup for tup in all_content if all(val is not None and val != '' for val in tup)]
+        filtered_list = [tup for tup in filtered_list if tup[0] not in prev_news]
         filtered_list = list(filter(lambda x: x[3] == 200, filtered_list))
         filtered_list = list(filter(lambda x: x[4] == 'en', filtered_list))
 
@@ -115,4 +118,14 @@ class ArticleScrapper:
             return bool(lang == 'en')
         except:
             return False
-        
+
+    def previous_news(self):
+        """
+        Get links of news articles previously included.
+        """
+        prev_news = self.bucket.get_blob('logs/log_article_scrapping.txt').download_as_string().decode()
+        pattern = r'http://www\.ground\.news/\S+'
+        url_list = re.findall(pattern, prev_news)
+        url_list = list(map(lambda x: x[:-2], url_list))
+
+        return url_list
