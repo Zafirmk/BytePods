@@ -59,7 +59,7 @@ You can install the required Python packages by running the following command:
 pip install -r requirements.txt
 ```
 
-### Setting API Keys 🔑
+### Setting ENV Variables 🔑
 
 The project requires API keys for Google Cloud Platform & OpenAI's ChatGPT to access the necessary services.
 You can set up your API keys by following these steps:
