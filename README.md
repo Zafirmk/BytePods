@@ -89,8 +89,12 @@ Once the API keys are setup, you will need a model and config file corresponding
 - Follow this [page](https://github.com/voicepaw/so-vits-svc-fork) to train your own voice model
 - Or, download pre-trained models from this [page](https://huggingface.co/models?search=so-vits-svc-4.0)
 
-Place both the .pth model file and config.json in the root directory.
-Example: ``./G_58000.pth`` and ``./config.json``
+Place the path to the download links into ``MODEL_URL`` and ``MODEL_CONFIG``
+Example: 
+```
+MODEL_URL = https://huggingface.co/xgdhdh/so-vits-svc-4.0/resolve/main/Saber/G_30400.pth
+MODEL_CONFIG = https://huggingface.co/xgdhdh/so-vits-svc-4.0/raw/main/Saber/config.json
+```
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
