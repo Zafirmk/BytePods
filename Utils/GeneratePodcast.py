@@ -3,6 +3,7 @@
 # pylint: disable=W0702
 # pylint: disable=R0914
 # pylint: disable=C0103
+# pylint: disable=W3101
 """
 Podcast mp3 generation using PyDub and so-vits-svc
 """
@@ -11,6 +12,7 @@ import io
 import shutil
 import subprocess
 from datetime import datetime
+import requests
 from tqdm import tqdm
 from pydub import AudioSegment
 from dotenv import load_dotenv
@@ -71,6 +73,7 @@ class GeneratePodcast:
         """
         so-vits-svc CLI command for all TTS responses from Google TTS API.
         """
+        self.download_model()
 
         BASE_CMD = 'svc'
         MODEL_PATH = 'G_58000.pth'
@@ -99,6 +102,8 @@ class GeneratePodcast:
 
         shutil.rmtree('tmp')
         shutil.rmtree('tmp_output')
+        os.remove(MODEL_PATH)
+        os.remove(CONFIG_PATH)
 
     def combine_tts(self):
         """
@@ -158,6 +163,22 @@ class GeneratePodcast:
         Getter for self.episode_name with type appended.
         """
         return self.episode_name + '.mp3'
+
+    def download_model(self):
+        """
+        Download the so-vits-model
+        """
+        url = os.environ['MODEL_URL']
+        filename = 'G_58000.pth'
+        res = requests.get(url)
+        with open(filename, "wb") as f:
+            f.write(res.content)
+
+        url = os.environ['MODEL_CONFIG']
+        filename = 'config.json'
+        res = requests.get(url)
+        with open(filename, "wb") as f:
+            f.write(res.content)
 
     def generate_podcast(self):
         """
