@@ -104,6 +104,8 @@ Example: ``./G_58000.pth`` and ``./config.json``
 - [ ] Include news from subtopics (Finance, Sports etc.)
 - [ ] Improve web scrapping model
     - Current version drops certain news articles if news can not be extracted via BoilerPy3
+- [ ] Ensure two consecutive podcasts do not repeat news
+    - See NewsByte: 005 and NewsByte: 006
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
