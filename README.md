@@ -27,7 +27,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About 🔰
 
-NewsBytes is an AI generated spotify podcast that covers global headlines in roughly 5 minutes. Sourcing through [ground.news](https://www.ground.news), NewsBytes is able report from neutral sources only. Every 24 hours a new podcast is posted with all its content, from the podcast audio to descriptions being AI generated. Keeping up with that theme, the podcast cover seen on spotify is also AI generated. See the image below for a detailed look at the tech stack used.
+NewsBytes is an AI generated podcast that covers global headlines in roughly 5 minutes. Sourcing through [ground.news](https://www.ground.news), NewsBytes is able report from neutral sources only. Every 24 hours a new podcast is posted with all its content, from the podcast audio to descriptions being AI generated. Keeping up with that theme, the podcast cover seen on spotify is also AI generated. See the image below for a detailed look at the tech stack used.
 
 ### Built With 🔧
 
