@@ -15,6 +15,7 @@ from datetime import datetime
 import requests
 from tqdm import tqdm
 from pydub import AudioSegment
+from pydub.effects import normalize
 from dotenv import load_dotenv
 from google.cloud import texttospeech, storage
 
@@ -54,64 +55,43 @@ class GeneratePodcast:
 
     def generate_tts(self):
         """
-        Google TTS API call for all summaries.
+        ElevenLabs TTS API call for all summaries.
         """
+        CHUNK_SIZE = 1024
+        url = f"https://api.elevenlabs.io/v1/text-to-speech/{os.environ['VOICE_ID']}"
+
+        headers = {
+            "Accept": "audio/mpeg",
+            "Content-Type": "application/json",
+            "xi-api-key": os.environ['ELEVENLABS_KEY']
+        }
+
         for idx, summary in tqdm(enumerate(self.summaries)):
-            synthesis_input = texttospeech.SynthesisInput(text = summary)
-            response = self.tts_client.synthesize_speech(
-                input = synthesis_input,
-                voice = self.voice,
-                audio_config = self.audio_config
-            )
+            data = {
+                "text": summary,
+                "voice_settings": {
+                    "stability": 0.75,
+                    "similarity_boost": 0.75
+                }
+            }
+
+            response = requests.post(url, json=data, headers=headers)
+            mp3_data = io.BytesIO()
+            for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
+                if chunk:
+                    mp3_data.write(chunk)
 
             blob = self.bucket.blob(f'individual_summaries/output_{idx}.mp3')
-            blob.upload_from_string(response.audio_content, content_type = 'audio/mpeg')
-
-        self.naturalize_tts()
-
-    def naturalize_tts(self):
-        """
-        so-vits-svc CLI command for all TTS responses from Google TTS API.
-        """
-        self.download_model()
-
-        BASE_CMD = 'svc'
-        MODEL_PATH = 'G_58000.pth'
-        CONFIG_PATH = 'config.json'
-        OUTPUT_PATH = './tmp_output/'
-
-        if not os.path.exists("tmp"):
-            os.mkdir("tmp")
-
-        blobs = self.bucket.list_blobs(prefix='individual_summaries/')
-        for blob in blobs:
-            if blob.name.endswith(".mp3"):
-                name = os.path.join("tmp", blob.name.split('/')[1])
-                blob.download_to_filename(name)
-
-        if not os.path.exists("tmp_output"):
-            os.mkdir("tmp_output")
-
-        for filename in tqdm(sorted(os.listdir('tmp'))):
-            cmd_args = [BASE_CMD, 'infer', f'tmp/{filename}', '-m', MODEL_PATH, '-c', CONFIG_PATH, '-o', f'{OUTPUT_PATH}{filename}', '-na']
-            subprocess.run(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-
-        for filename in sorted(os.listdir('tmp_output')):
-            blob = self.bucket.blob(f'individual_summaries/{filename}')
-            blob.upload_from_filename(os.path.join('tmp_output', filename), content_type = 'audio/mpeg')
-
-        shutil.rmtree('tmp')
-        shutil.rmtree('tmp_output')
-        os.remove(MODEL_PATH)
-        os.remove(CONFIG_PATH)
+            mp3_data.seek(0)
+            blob.upload_from_file(mp3_data, content_type = 'audio/mpeg')
 
     def combine_tts(self):
         """
         Combine all TTS clips with background audio.
         """
-        INTRO_DB_REDUCTION = 10
+        INTRO_DB_REDUCTION = 25
         SEGMENT_CHANGE_DB_REDUCTION = 15
-        BACKGROUND_SEGMENT_DB_REDUCTION = 20
+        BACKGROUND_SEGMENT_DB_REDUCTION = 25
         CROSSFADE_DURATION = 500
 
         news_segment_file_names = [blob.name for blob in self.bucket.list_blobs(prefix = 'individual_summaries/') if blob.name.endswith('.mp3')]
@@ -122,14 +102,17 @@ class GeneratePodcast:
         first_segment_background = AudioSegment.from_file(io.BytesIO(self.bucket.blob('fixed_audio_files/first_segment_background.mp3').download_as_string())) - BACKGROUND_SEGMENT_DB_REDUCTION
         segment_background = AudioSegment.from_file(io.BytesIO(self.bucket.blob('fixed_audio_files/segment_background.mp3').download_as_string())) - BACKGROUND_SEGMENT_DB_REDUCTION
 
-        output_audio = intro.fade_out(CROSSFADE_DURATION)
+        output_audio = AudioSegment.silent(len(intro) - (len(intro) - 5500))
 
         for i, news_segment in enumerate(news_segments):
 
-            if i == 0:
-                curr_segment = news_segment.overlay(first_segment_background, loop = True)
-                curr_segment = curr_segment.append(AudioSegment.silent(duration=250))
-                output_audio = output_audio.append(curr_segment)
+            news_segment = normalize(AudioSegment.from_file(f'output_{i}.mp3'), headroom = -2.0)
+
+            if i == 0:    
+                output_audio = output_audio.append(AudioSegment.silent(len(news_segment)))
+                output_audio = output_audio.overlay(intro, position = 0, loop = False)
+                output_audio = output_audio.overlay(news_segment, position = 4750, loop = False)
+                output_audio = output_audio.overlay(first_segment_background, position = len(intro), loop = True)
             else:
                 curr_segment = news_segment.overlay(segment_background, loop = True)
                 curr_segment = curr_segment.append(AudioSegment.silent(duration=150))
@@ -163,22 +146,6 @@ class GeneratePodcast:
         Getter for self.episode_name with type appended.
         """
         return self.episode_name + '.mp3'
-
-    def download_model(self):
-        """
-        Download the so-vits-model
-        """
-        url = os.environ['MODEL_URL']
-        filename = 'G_58000.pth'
-        res = requests.get(url)
-        with open(filename, "wb") as f:
-            f.write(res.content)
-
-        url = os.environ['MODEL_CONFIG']
-        filename = 'config.json'
-        res = requests.get(url)
-        with open(filename, "wb") as f:
-            f.write(res.content)
 
     def generate_podcast(self):
         """
