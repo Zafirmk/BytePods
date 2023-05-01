@@ -9,8 +9,6 @@ Podcast mp3 generation using PyDub and so-vits-svc
 """
 import os
 import io
-import shutil
-import subprocess
 from datetime import datetime
 import requests
 from tqdm import tqdm
@@ -108,7 +106,7 @@ class GeneratePodcast:
 
             news_segment = normalize(AudioSegment.from_file(f'output_{i}.mp3'), headroom = -2.0)
 
-            if i == 0:    
+            if i == 0:
                 output_audio = output_audio.append(AudioSegment.silent(len(news_segment)))
                 output_audio = output_audio.overlay(intro, position = 0, loop = False)
                 output_audio = output_audio.overlay(news_segment, position = 4750, loop = False)
