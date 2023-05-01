@@ -15,7 +15,7 @@ from tqdm import tqdm
 from pydub import AudioSegment
 from pydub.effects import normalize
 from dotenv import load_dotenv
-from google.cloud import texttospeech, storage
+from google.cloud import storage
 
 load_dotenv()
 
@@ -27,16 +27,6 @@ class GeneratePodcast:
     def __init__(self, summaries) -> None:
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'TTSCredentials.json'
         os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
-        self.tts_client = texttospeech.TextToSpeechClient()
-        self.voice = texttospeech.VoiceSelectionParams(
-            language_code="en-GB",
-            ssml_gender=texttospeech.SsmlVoiceGender.MALE,
-            name = "en-GB-News-J"
-        )
-        self.audio_config = texttospeech.AudioConfig(
-            audio_encoding = texttospeech.AudioEncoding.MP3,
-            speaking_rate = 1.15
-        )
         self.bucket_client = storage.Client('TTSCredentials.json')
         self.bucket = self.bucket_client.bucket(os.getenv('BUCKET_NAME'))
         blobs = self.bucket.list_blobs(prefix='individual_summaries/')
@@ -104,7 +94,7 @@ class GeneratePodcast:
 
         for i, news_segment in enumerate(news_segments):
 
-            news_segment = normalize(AudioSegment.from_file(f'output_{i}.mp3'), headroom = -2.0)
+            news_segment = normalize(AudioSegment.from_file(io.BytesIO(self.bucket.blob(f'individual_summaries/output_{i}.mp3').download_as_string())), headroom=-2.0)
 
             if i == 0:
                 output_audio = output_audio.append(AudioSegment.silent(len(news_segment)))
