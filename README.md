@@ -29,10 +29,16 @@
 
 NewsBytes is an AI generated podcast that covers global headlines in roughly 5 minutes. Sourcing through [ground.news](https://www.ground.news), NewsBytes is able report from neutral sources only. Every 24 hours a new podcast is posted with all its content, from the podcast audio to descriptions being AI generated. Keeping up with that theme, the podcast cover seen on spotify is also AI generated. See the image below for a detailed look at the tech stack used.
 
-### Built With 🔧
+## Built With 🔧
 
+### Version 1.0+ 📌
 <p align="center">
     <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/stack.png">
+</p>
+
+### Version 2.0+ 📌
+<p align="center">
+    <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/stackv2.png">
 </p>
 
 ### Labels 🏷
@@ -85,6 +91,7 @@ ELEVENLABS_KEY = ElevenLabs TTS API key [Only for v2.*]
 VOICE_ID = Speaker ID for ElevenLabs TTS [Only for v2.*]
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 ### SO-VITS-SVC Setup (v1.*) 🔩
 
