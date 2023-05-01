@@ -120,16 +120,11 @@ Note: If you are using v2.*, this set up is not required. Only an API key for El
 <!-- POTENTIAL IMPROVEMENTS -->
 ## Potential Improvements ⚙️
 
-- [X] Tweak TTS naturalization
-    - Current version may encounter voice cracks
-    - See NewsByte: 003
-    - UPDATE: v2.* includes [ElevenLab TTS](https://beta.elevenlabs.io/speech-synthesis)
+- [ ] Address volume drop off in ElevenLabs TTS model
+    - [Issue](https://github.com/elevenlabs/elevenlabs-python/issues/8) currently open 
 - [ ] Include news from subtopics (Finance, Sports etc.)
 - [ ] Improve web scrapping model
     - Current version drops certain news articles if news can not be extracted via BoilerPy3
-- [X] Have ``so-vits-svc`` downloaded during runtime, rather than storing 500MB+ model locally
-- [X] Ensure two consecutive podcasts do not repeat news
-    - See NewsByte: 005 and NewsByte: 006
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
