@@ -22,6 +22,11 @@
   </div>
 </div>
 
+<p align="center">
+    <a href="https://open.spotify.com/episode/5RBaj7sQxuPsYQXvKW4FcA?si=e036b95ea07a4df3">v2.0+ now streaming starting NewsByte 008</a>
+</p>
+
+
 <br/>
 
 <!-- ABOUT THE PROJECT -->
