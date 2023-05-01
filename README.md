@@ -77,12 +77,16 @@ OPENAI_PROMPT = OpenAI prompt to summarize news articles
 OPENAI_DESCRIPTION_PROMPT = OpenAI prompt to create episode description
 GOOGLE_APPLICATION_CREDENTIALS = Path to GCP credentials json
 BUCKET_NAME = GCP bucket name
-MODEL_URL = Download link to so-vits-svc model (.pth file)
-MODEL_CONFIG = Download link to so-vits-svc model config (.json file)
+
+MODEL_URL = Download link to so-vits-svc model (.pth file) [Only for v1.*]
+MODEL_CONFIG = Download link to so-vits-svc model config (.json file) [Only for v1.*]
+
+ELEVENLABS_KEY = ElevenLabs TTS API key [Only for v2.*]
+VOICE_ID = Speaker ID for ElevenLabs TTS [Only for v2.*]
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### SO-VITS-SVC Setup 🔩
+### SO-VITS-SVC Setup (v1.*) 🔩
 
 Once the API keys are setup, you will need a model and config file corresponding to the voice you want to use for the podcast.
 
@@ -96,15 +100,18 @@ MODEL_URL = https://huggingface.co/xgdhdh/so-vits-svc-4.0/resolve/main/Saber/G_3
 MODEL_CONFIG = https://huggingface.co/xgdhdh/so-vits-svc-4.0/raw/main/Saber/config.json
 ```
 
+Note: If you are using v2.*, this set up is not required. Only an API key for ElevenLabs is required.
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- POTENTIAL IMPROVEMENTS -->
 ## Potential Improvements ⚙️
 
-- [ ] Tweak TTS naturalization
+- [X] Tweak TTS naturalization
     - Current version may encounter voice cracks
     - See NewsByte: 003
+    - UPDATE: v2.* includes [ElevenLab TTS](https://beta.elevenlabs.io/speech-synthesis)
 - [ ] Include news from subtopics (Finance, Sports etc.)
 - [ ] Improve web scrapping model
     - Current version drops certain news articles if news can not be extracted via BoilerPy3
