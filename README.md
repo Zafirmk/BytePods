@@ -1,6 +1,14 @@
 <a name="readme-top"></a>
 <p align="center">
-    <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/heading.gif">
+    <a href="https://www.2pods.net" style="margin: 0px 10px; text-decoration: none;">
+        <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/heading.gif">
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://www.2pods.net" style="margin: 0px 10px; text-decoration: none;">
+        <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/2pods.png" style = "width: 40%;">
+    </a>
 </p>
 
 ---
