@@ -40,10 +40,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About 🔰
 
-NewsBytes is an AI generated podcast that covers global headlines in roughly 5 minutes. Sourcing through [ground.news](https://www.ground.news), NewsBytes is able report from neutral sources only. As a part of 2pod's Byte Podcasts, NewsBytes is able to post a new podcast every 24 hours is with all its content, from the podcast audio to descriptions being AI generated. Keeping up with that theme, the podcast cover seen on spotify is also AI generated. See the image below for a detailed look at the tech stack used.
+NewsBytes is an AI generated podcast that covers global headlines in roughly 5 minutes. Sourcing through [ground.news](https://www.ground.news), NewsBytes is able report from neutral sources only. As a part of [2pod's](https://www.2pods.net) Byte Podcasts, NewsBytes is able to post a new podcast every 24 hours is with all its content, from the podcast audio to descriptions being AI generated. Keeping up with that theme, the podcast cover seen on spotify is also AI generated. See the image below for a detailed look at the tech stack used.
 
 ## Why Sponsor? 🫶🏼
-If you enjoy the content of NewsBytes, or believe in the potential of AI backed podcasting consider sponsoring! It will greatly help in keeping this self funded project afloat. Sponsoring will help cover API & Storage costs - as well as allowing 2pods to grow.  
+If you enjoy the content of NewsBytes, or believe in the potential of AI backed podcasting consider sponsoring! It will greatly help in keeping this self funded project afloat. Sponsoring will help cover API & Storage costs - as well as allowing [2pods](https://www.2pods.net) to grow.  
   
 <a href=https://github.com/sponsors/Zafirmk>
     <img src="https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA"/>
