@@ -128,6 +128,7 @@ Note: If you are using v2.*, this set up is not required. Only an API key for El
 <!-- POTENTIAL IMPROVEMENTS -->
 ## Potential Improvements ⚙️
 
+- [ ] Optimize [2pods](https://www.2pods.net) website for mobile
 - [ ] Address volume drop off in ElevenLabs TTS model
     - [Issue](https://github.com/elevenlabs/elevenlabs-python/issues/8) currently open 
 - [ ] Include news from subtopics (Finance, Sports etc.)
