@@ -28,11 +28,10 @@
       <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_playerfm.png" style="width: 200px; height: 49px;">
     </a>
   </div>
+  <a href="https://www.producthunt.com/posts/2pods?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-2pods" target="_blank">
+  <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=392634&theme=dark" alt="2pods - AI&#0032;Generated&#0032;Automated&#0032;Podcasting | Product Hunt" style="width: 200px; height: 59px; margin-top: 10px;" width="200" height="59" />
+  </a>
 </div>
-
-<p align="center">
-    <a href="https://open.spotify.com/episode/5RBaj7sQxuPsYQXvKW4FcA?si=e036b95ea07a4df3">v2.0+ now streaming starting NewsByte 008</a>
-</p>
 
 
 <br/>
@@ -41,6 +40,10 @@
 ## About 🔰
 
 NewsBytes is an AI generated podcast that covers global headlines in roughly 5 minutes. Sourcing through [ground.news](https://www.ground.news), NewsBytes is able report from neutral sources only. As a part of [2pod's](https://www.2pods.net) Byte Podcasts, NewsBytes is able to post a new podcast every 24 hours is with all its content, from the podcast audio to descriptions being AI generated. Keeping up with that theme, the podcast cover seen on spotify is also AI generated. See the image below for a detailed look at the tech stack used.
+
+<p align="center">
+    <a href="https://open.spotify.com/episode/5RBaj7sQxuPsYQXvKW4FcA?si=e036b95ea07a4df3">v2.0+ now streaming starting NewsByte 008</a>
+</p>
 
 ## Why Sponsor? 🫶🏼
 If you enjoy the content of NewsBytes, or believe in the potential of AI backed podcasting consider sponsoring! It will greatly help in keeping this self funded project afloat. Sponsoring will help cover API & Storage costs - as well as allowing [2pods](https://www.2pods.net) to grow.  
