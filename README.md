@@ -176,7 +176,7 @@ Distributed under the Apache-2.0 license. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact 📞
 
-<a href="mailto:zafirmk0@gmail.com">
+<a href="mailto:zafir@2pods.net">
     <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail">
 </a>
 
