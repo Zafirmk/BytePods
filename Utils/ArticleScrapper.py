@@ -27,6 +27,7 @@ class ArticleScrapper:
         self.latest_stories = None
         self.all_ground_news_links = None
         self.article_links = []
+        self.headlines = []
         self.all_news_content = []
         self.base_url = base_url
         self.request = requests.get(self.base_url + '/interest/international', timeout=10)
@@ -49,6 +50,21 @@ class ArticleScrapper:
         """
         a_tags = self.soup.find_all('a', {'class': 'absolute left-0 right-0 top-0 bottom-0 z-1'})
         self.latest_stories = list(map(lambda toAppend: self.base_url + toAppend, map(lambda a_tag: a_tag['href'], a_tags)))
+    
+    def get_headlines(self):
+        """
+        Gets headlines for all stories.
+        """
+        self.all_ground_news_links = self.top_stories + self.latest_stories
+        for story in self.all_ground_news_links:
+            curr_story = requests.get(story, timeout=10)
+            curr_soup = BeautifulSoup(curr_story.content, 'html.parser')
+            curr_headline = curr_soup.find('h1', {'id': 'titleArticle'})
+            try:
+                curr_headline = curr_headline.text.strip()
+            except:
+                curr_headline = None
+            self.headlines.append(curr_headline)
 
     def get_article_links(self):
         """
@@ -69,9 +85,15 @@ class ArticleScrapper:
         """
         Stores logs of the articles scrapped.
         """
+        headlines_blob = self.bucket.blob('logs/seen_headlines.txt')
+        seen_headlines = headlines_blob.download_as_string().decode()
+        for tup in arr:
+            headline = tup[5]
+            if headline+'\n' not in seen_headlines:
+                seen_headlines += (headline+'\n')
+        headlines_blob.upload_from_string(seen_headlines)
         blob = self.bucket.blob('logs/log_article_scrapping.txt')
-        blob.upload_from_string('\n'.join([''.join(str(t)) for t in arr]))
-
+        blob.upload_from_string(','.join([''.join(str(t)) for t in arr]))
 
     def get_news(self):
         """
@@ -80,6 +102,7 @@ class ArticleScrapper:
         self.gettop_stories()
         self.getlatest_stories()
         self.get_article_links()
+        self.get_headlines()
 
         status_codes = []
         languages = []
@@ -98,10 +121,12 @@ class ArticleScrapper:
                 languages.append('n/a')
             self.all_news_content.append(content)
             if link: status_codes.append(resp.status_code)
-        all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content, status_codes, languages)
+        all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content, status_codes, languages, self.headlines)
+
         prev_news = self.previous_news()
+
         filtered_list = [tup for tup in all_content if all(val is not None and val != '' for val in tup)]
-        filtered_list = [tup for tup in filtered_list if tup[0] not in prev_news]
+        filtered_list = list(filter(lambda x: x[5] not in prev_news, filtered_list))
         filtered_list = list(filter(lambda x: x[3] == 200, filtered_list))
         filtered_list = list(filter(lambda x: x[4] == 'en', filtered_list))
 
@@ -121,11 +146,7 @@ class ArticleScrapper:
 
     def previous_news(self):
         """
-        Get links of news articles previously included.
+        Get headlines of news articles previously included.
         """
-        prev_news = self.bucket.get_blob('logs/log_article_scrapping.txt').download_as_string().decode()
-        pattern = r'http://www\.ground\.news/\S+'
-        url_list = re.findall(pattern, prev_news)
-        url_list = list(map(lambda x: x[:-2], url_list))
-
-        return url_list
+        prev_headlines = self.bucket.get_blob('logs/seen_headlines.txt').download_as_string().decode().split("\n")
+        return prev_headlines

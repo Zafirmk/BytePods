@@ -88,6 +88,6 @@ class PublishPodcast:
                 media = Media(meta_data[0], size = meta_data[1]),
                 subtitle = self.bucket.blob('podcast_contents/description.txt').download_as_string().decode(),
                 summary = self.bucket.blob('podcast_contents/description.txt').download_as_string().decode(),
-                publication_date = self.time_zone.fromutc(datetime.utcnow()).strftime('%d/%m/%Y %H:%M:%S %z')
+                publication_date = self.time_zone.fromutc(datetime.utcnow()).strftime('%m/%d/%Y %H:%M:%S %z')
             )
         ]

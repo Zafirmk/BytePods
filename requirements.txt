@@ -2,14 +2,11 @@ beautifulsoup4==4.11.1
 boilerpy3==1.0.6
 feedparser==6.0.10
 langdetect==1.0.9
-openai==0.27.4
+openai==0.27.6
 podgen==1.1.0
 protobuf==3.19.6
 pydub==0.25.1
 python-dotenv==1.0.0
 pytz==2022.1
-Requests==2.28.2
+Requests==2.30.0
 tqdm==4.64.0
-google-cloud-storage==2.8.0
-google-cloud-texttospeech==2.14.1
-so-vits-svc-fork==3.10.5
