@@ -145,7 +145,7 @@ Note: If you are using v2.*, this set up is not required. Only an API key for El
 - [ ] Include news from subtopics (Finance, Sports etc.)
 - [ ] Improve web scrapping model
     - Current version drops certain news articles if news can not be extracted via BoilerPy3
-- [ ] News Repition still occuring
+- [X] News Repition still occuring
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
