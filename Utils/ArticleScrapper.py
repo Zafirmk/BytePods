@@ -8,7 +8,6 @@
 BeautifulSoup scrapper to get articles.
 """
 import os
-import re
 import requests
 from bs4 import BeautifulSoup
 from boilerpy3 import extractors
@@ -50,7 +49,7 @@ class ArticleScrapper:
         """
         a_tags = self.soup.find_all('a', {'class': 'absolute left-0 right-0 top-0 bottom-0 z-1'})
         self.latest_stories = list(map(lambda toAppend: self.base_url + toAppend, map(lambda a_tag: a_tag['href'], a_tags)))
-    
+
     def get_headlines(self):
         """
         Gets headlines for all stories.
