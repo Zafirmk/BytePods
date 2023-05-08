@@ -1,13 +1,13 @@
 <a name="readme-top"></a>
 <p align="center">
     <a href="https://www.2pods.net" style="margin: 0px 10px; text-decoration: none;">
-        <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/heading.gif">
+        <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/heading.gif">
     </a>
 </p>
 
 <p align="center">
     <a href="https://www.2pods.net" style="margin: 0px 10px; text-decoration: none;">
-        <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/2pods.png" style = "width: 40%;">
+        <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/2pods.png" style = "width: 40%;">
     </a>
 </p>
 
@@ -16,16 +16,16 @@
 <div align="center">
   <div style="display: flex; justify-content: center;">
     <a href="https://open.spotify.com/show/1Q5FjHPnbtyz8shYBqqyXC" style="margin: 0px 10px; text-decoration: none;">
-      <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_spotify.png" style="width: 200px; height: 49px;">
+      <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/badges/badge_spotify.png" style="width: 200px; height: 49px;">
     </a>
     <a href="https://podcasts.apple.com/us/podcast/newsbytes/id1684407002" style="margin: 0px 10px; text-decoration: none;">
-      <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_apple.svg" style="width: 200px; height: 49px;">
+      <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/badges/badge_apple.svg" style="width: 200px; height: 49px;">
     </a>
     <a href="https://podcasts.google.com/feed/aHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL25ldXRyYWxuZXdzLWF1ZGlvLWJ1Y2tldC9OZXdzQnl0ZV9SU1MueG1s" style="margin: 0px 10px; text-decoration: none;">
-      <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_google.png" style="width: 200px; height: 49px;">
+      <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/badges/badge_google.png" style="width: 200px; height: 49px;">
     </a>
     <a href="https://player.fm/series/newsbytes" style="margin: 0px 10px; text-decoration: none;">
-      <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/badges/badge_playerfm.png" style="width: 200px; height: 49px;">
+      <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/badges/badge_playerfm.png" style="width: 200px; height: 49px;">
     </a>
   </div>
   <a href="https://www.producthunt.com/posts/2pods?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-2pods" target="_blank">
@@ -57,12 +57,12 @@ If you enjoy the content of NewsBytes, or believe in the potential of AI backed 
 
 ### Version 1.0+ 📌
 <p align="center">
-    <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/stack.png">
+    <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/stack.png">
 </p>
 
 ### Version 2.0+ 📌
 <p align="center">
-    <img src="https://github.com/Zafirmk/NeutralNews-Podcast/blob/main/Images/stackv2.png">
+    <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/stackv2.png">
 </p>
 
 ### Labels 🏷
