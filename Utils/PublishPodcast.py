@@ -23,7 +23,7 @@ class PublishPodcast:
     """
     def __init__(self, episode_name) -> None:
         self.bucket = storage.Client.from_service_account_json('TTSCredentials.json').bucket(os.getenv('BUCKET_NAME'))
-        temp = self.bucket.blob('NewsByte_RSS.xml')
+        temp = self.bucket.blob('CryptoByte_RSS.xml')
         temp.reload()
         self.podcast_xml = feedparser.parse(temp.download_as_string())
         self.episode_name = episode_name
@@ -56,10 +56,10 @@ class PublishPodcast:
         rss_string = self.podcast.rss_str()
         rss_string = self.insert_extra_tags(rss_string)
 
-        self.bucket.blob('NewsByte_RSS.xml').cache_control = 'public, max-age=60'
-        self.bucket.blob('NewsByte_RSS.xml').patch()
-        self.bucket.blob('NewsByte_RSS.xml').upload_from_string(rss_string, content_type='application/xml')
-        self.bucket.blob('NewsByte_RSS.xml').make_public()
+        self.bucket.blob('CryptoByte_RSS.xml').cache_control = 'public, max-age=60'
+        self.bucket.blob('CryptoByte_RSS.xml').patch()
+        self.bucket.blob('CryptoByte_RSS.xml').upload_from_string(rss_string, content_type='application/xml')
+        self.bucket.blob('CryptoByte_RSS.xml').make_public()
 
     def insert_extra_tags(self, rss_string):
         """

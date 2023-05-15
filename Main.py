@@ -11,6 +11,17 @@ def main():
     """
     Main function that executes the CryptoBytes pipeline.
     """
+    news_reports = ArticleScrapper('https://cryptopotato.com/category/crypto-news/').get_news()
+    summaries = SummarizeNews(news_reports)
+    summaries.summarize_articles()
+    summaries.generate_introduction()
+    summaries.generate_outro()
+    for summary in summaries.get_summaries():
+        print(summary)
+        print('\n')
+    episode_name = GeneratePodcast(summaries.get_summaries()).get_episode_name()
+    print(episode_name)
+    
 
 if __name__ == '__main__':
     main()
