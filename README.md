@@ -11,6 +11,10 @@
     </a>
 </p>
 
+<p align = "center">
+<a href="https://www.producthunt.com/posts/2pods?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-2pods" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=392634&theme=light" alt="2pods - AI&#0032;generated&#0032;automated&#0032;podcasting | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+</p>
+
 ---
 
 
