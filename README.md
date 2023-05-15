@@ -39,11 +39,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About 🔰
 
-NewsBytes is an AI generated podcast that covers global headlines in roughly 5 minutes. Sourcing through [ground.news](https://www.ground.news), NewsBytes is able report from neutral sources only. As a part of [2pod's](https://www.2pods.net) Byte Podcasts, NewsBytes is able to post a new podcast every 24 hours is with all its content, from the podcast audio to descriptions being AI generated. Keeping up with that theme, the podcast cover seen on spotify is also AI generated. See the image below for a detailed look at the tech stack used.
-
-<p align="center">
-    <a href="https://open.spotify.com/episode/5RBaj7sQxuPsYQXvKW4FcA?si=e036b95ea07a4df3">v2.0+ now streaming starting NewsByte 008</a>
-</p>
+CryptoBytes is an AI generated podcast that covers the latest crypto news in roughly 5 minutes. CryptoBytes is a vertical which pushes the boundaries of what is capable. This specific podcast incorporates an AI with a sense of humour to deliever a more natural sounding news podcast. As a part of [2pod's](https://www.2pods.net) Byte Podcasts, CryptoBytes is able to post a new podcast every 24 hours is with all its content, from the podcast audio to descriptions being AI generated. Keeping up with that theme, the podcast cover seen on spotify is also AI generated. See the image below for a detailed look at the tech stack used.
 
 ## Why Sponsor? 🫶🏼
 If you enjoy the content of NewsBytes, or believe in the potential of AI backed podcasting consider sponsoring! It will greatly help in keeping this self funded project afloat. Sponsoring will help cover API & Storage costs - as well as allowing [2pods](https://www.2pods.net) to grow.  
@@ -102,17 +98,7 @@ You can set up your API keys by following these steps:
 4. Download the JSON key for your service account.
 
 ```
-OPENAI_API_KEY = OpenAI API key
-OPENAI_PROMPT = OpenAI prompt to summarize news articles
-OPENAI_DESCRIPTION_PROMPT = OpenAI prompt to create episode description
-GOOGLE_APPLICATION_CREDENTIALS = Path to GCP credentials json
-BUCKET_NAME = GCP bucket name
-
-MODEL_URL = Download link to so-vits-svc model (.pth file) [Only for v1.*]
-MODEL_CONFIG = Download link to so-vits-svc model config (.json file) [Only for v1.*]
-
-ELEVENLABS_KEY = ElevenLabs TTS API key [Only for v2.*]
-VOICE_ID = Speaker ID for ElevenLabs TTS [Only for v2.*]
+See .env.sample file
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -140,12 +126,8 @@ Note: If you are using v2.*, this set up is not required. Only an API key for El
 ## Potential Improvements ⚙️
 
 - [ ] Optimize [2pods](https://www.2pods.net) website for mobile
-- [ ] Address volume drop off in ElevenLabs TTS model
-    - [Issue](https://github.com/elevenlabs/elevenlabs-python/issues/8) currently open 
-- [ ] Include news from subtopics (Finance, Sports etc.)
 - [ ] Improve web scrapping model
     - Current version drops certain news articles if news can not be extracted via BoilerPy3
-- [X] News Repition still occuring
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
