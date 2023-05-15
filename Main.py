@@ -16,11 +16,8 @@ def main():
     summaries.summarize_articles()
     summaries.generate_introduction()
     summaries.generate_outro()
-    for summary in summaries.get_summaries():
-        print(summary)
-        print('\n')
     episode_name = GeneratePodcast(summaries.get_summaries()).get_episode_name()
-    print(episode_name)
+    PublishPodcast(episode_name)
     
 
 if __name__ == '__main__':
