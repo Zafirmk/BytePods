@@ -1,7 +1,7 @@
 <a name="readme-top"></a>
 <p align="center">
     <a href="https://www.2pods.net" style="margin: 0px 10px; text-decoration: none;">
-        <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/heading_NB.gif">
+        <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/BytePods_heading.gif">
     </a>
 </p>
 
