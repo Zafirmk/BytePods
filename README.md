@@ -53,12 +53,12 @@ If you enjoy the content of NewsBytes, or believe in the potential of AI backed 
 
 ### Version 1.0+ 📌
 <p align="center">
-    <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/stack.png">
+    <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/stack_CB.png">
 </p>
 
 ### Version 2.0+ 📌
 <p align="center">
-    <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/stackv2.png">
+    <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/stackv2_CB.png">
 </p>
 
 ### Labels 🏷
