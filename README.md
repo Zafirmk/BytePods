@@ -15,16 +15,16 @@
 
 <div align="center">
   <div style="display: flex; justify-content: center;">
-    <a href="#" style="margin: 0px 10px; text-decoration: none;">
+    <a href="https://open.spotify.com/show/5NN2XFw2ScB9qVMIkhfPYp?si=5119e1f6ba4a4f4b" style="margin: 0px 10px; text-decoration: none;">
       <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/badges/badge_spotify.png" style="width: 200px; height: 49px;">
     </a>
-    <a href="#" style="margin: 0px 10px; text-decoration: none;">
+    <a href="https://podcasts.apple.com/us/podcast/cryptobytes/id1688038608" style="margin: 0px 10px; text-decoration: none;">
       <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/badges/badge_apple.svg" style="width: 200px; height: 49px;">
     </a>
     <a href="#" style="margin: 0px 10px; text-decoration: none;">
       <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/badges/badge_google.png" style="width: 200px; height: 49px;">
     </a>
-    <a href="#" style="margin: 0px 10px; text-decoration: none;">
+    <a href="https://player.fm/series/cryptobytes" style="margin: 0px 10px; text-decoration: none;">
       <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/badges/badge_playerfm.png" style="width: 200px; height: 49px;">
     </a>
   </div>
