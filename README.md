@@ -75,7 +75,7 @@
     <a href="#" style="margin: 0px 10px; text-decoration: none;">
       <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/badges/badge_google.png" style="width: 200px; height: 49px;">
     </a>
-    <a href="#" style="margin: 0px 10px; text-decoration: none;">
+    <a href="https://player.fm/series/cryptobytes" style="margin: 0px 10px; text-decoration: none;">
       <img src="https://github.com/Zafirmk/NewsBytes/blob/NewsBytes/Images/badges/badge_playerfm.png" style="width: 200px; height: 49px;">
     </a>
   </div>
