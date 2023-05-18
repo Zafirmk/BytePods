@@ -82,6 +82,12 @@
 </div>
          </td>
        </tr>
+       <td align="center">
+           <img src=https://img.shields.io/badge/Current_Status-Paused_(Maintenance)-red>
+        </td>
+        <td align="center">
+           <img src=https://img.shields.io/badge/Current_Status-Paused_(Lack_of_funding)-red>
+        </td>
     </table>
 </div>
 
