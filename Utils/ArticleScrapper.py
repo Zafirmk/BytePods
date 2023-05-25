@@ -36,6 +36,20 @@ class ArticleScrapper:
         self.bucket = storage.Client.from_service_account_json('TTSCredentials.json').bucket(os.getenv('BUCKET_NAME'))
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'TTSCredentials.json'
 
+    def getcontent_video(self):
+        """
+        Generate logs for short form video bot
+        """
+        a_tags = list(map(lambda toAppend: self.base_url + toAppend, map(lambda a_tag: a_tag['href'], self.soup.find_all('a', {'class': 'flex flex-row tablet:flex-col cursor-pointer gap-1_6 w-full'}))))
+        headlines = list(map(lambda x: x.text.strip(), self.soup.findAll('h3', {'class': 'text-22 leading-10 line-clamp-3 group-hover:underline font-bold'})))
+        imgs = list(map(lambda x: "https://www.ground.news" + x.find('img')['src'], self.soup.find_all('span', {'style': "box-sizing:border-box;display:block;overflow:hidden;width:initial;height:initial;background:none;opacity:1;border:0;margin:0;padding:0;position:absolute;top:0;left:0;bottom:0;right:0"})))
+        voiceover_fallback = list(map(lambda x: x.text.strip(), self.soup.find_all('span', {'class': 'text-14 leading-7 mt-8px pr-4 line-clamp-3'})))
+
+        lst = str(list(zip(headlines, voiceover_fallback, imgs)))
+        videobot_blob = self.bucket.blob('logs/log_videobot.txt')
+        videobot_blob.upload_from_string(lst, content_type="text/plain; charset=utf-8")
+
+
     def gettop_stories(self):
         """
         Gets top ground.news article links of top stories.
@@ -74,6 +88,10 @@ class ArticleScrapper:
             curr_story = requests.get(story, timeout=10)
             curr_soup = BeautifulSoup(curr_story.content, 'html.parser')
             center_article = curr_soup.find('button', string = 'Center')
+            if not center_article: center_article = curr_soup.find('button', string = 'Lean Right')
+            if not center_article: center_article = curr_soup.find('button', string = 'Far Right')
+            if not center_article: center_article = curr_soup.find('button', string = 'Lean Left')
+            if not center_article: center_article = curr_soup.find('button', string = 'Far Left')
             try:
                 article_link = center_article.find_parent('a')
             except:
@@ -90,9 +108,10 @@ class ArticleScrapper:
             headline = tup[5]
             if headline+'\n' not in seen_headlines:
                 seen_headlines += (headline+'\n')
-        headlines_blob.upload_from_string(seen_headlines)
+        headlines_blob.upload_from_string(seen_headlines, content_type="text/plain; charset=utf-8")
         blob = self.bucket.blob('logs/log_article_scrapping.txt')
-        blob.upload_from_string(','.join([''.join(str(t)) for t in arr]))
+        blob.upload_from_string(','.join([''.join(str(t)) for t in arr]), content_type="text/plain; charset=utf-8")
+        self.getcontent_video()
 
     def get_news(self):
         """
