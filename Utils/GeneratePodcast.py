@@ -79,7 +79,7 @@ class GeneratePodcast:
         """
         INTRO_DB_REDUCTION = 25
         SEGMENT_CHANGE_DB_REDUCTION = 15
-        BACKGROUND_SEGMENT_DB_REDUCTION = 25
+        BACKGROUND_SEGMENT_DB_REDUCTION = 35
         CROSSFADE_DURATION = 500
 
         news_segment_file_names = [blob.name for blob in self.bucket.list_blobs(prefix = 'individual_summaries/') if blob.name.endswith('.mp3')]
@@ -94,7 +94,7 @@ class GeneratePodcast:
 
         for i, news_segment in enumerate(news_segments):
 
-            news_segment = normalize(AudioSegment.from_file(io.BytesIO(self.bucket.blob(f'individual_summaries/output_{i}.mp3').download_as_string())), headroom=-2.0)
+            news_segment = AudioSegment.from_file(io.BytesIO(self.bucket.blob(f'individual_summaries/output_{i}.mp3').download_as_string()))
 
             if i == 0:
                 output_audio = output_audio.append(AudioSegment.silent(len(news_segment)))

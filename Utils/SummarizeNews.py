@@ -52,7 +52,9 @@ class SummarizeNews:
         Stores logs of the summaries generated.
         """
         blob = self.bucket.blob('logs/log_summaries.txt')
-        blob.upload_from_string('\n'.join(self.summaries))
+        headlines = list(map(lambda x: x[5], self.articles))
+        zipped = list(zip(self.summaries[:len(headlines)], headlines))
+        blob.upload_from_string(str(zipped))
 
     def generate_description(self):
         """
