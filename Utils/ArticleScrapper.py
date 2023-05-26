@@ -28,6 +28,7 @@ class ArticleScrapper:
         self.article_links = []
         self.headlines = []
         self.all_news_content = []
+        self.fallback_voiceovers = []
         self.base_url = base_url
         self.request = requests.get(self.base_url + '/interest/international', timeout=10)
         self.soup = BeautifulSoup(self.request.content, 'html.parser')
@@ -40,12 +41,12 @@ class ArticleScrapper:
         """
         Generate logs for short form video bot
         """
-        a_tags = list(map(lambda toAppend: self.base_url + toAppend, map(lambda a_tag: a_tag['href'], self.soup.find_all('a', {'class': 'flex flex-row tablet:flex-col cursor-pointer gap-1_6 w-full'}))))
-        headlines = list(map(lambda x: x.text.strip(), self.soup.findAll('h3', {'class': 'text-22 leading-10 line-clamp-3 group-hover:underline font-bold'})))
-        imgs = list(map(lambda x: "https://www.ground.news" + x.find('img')['src'], self.soup.find_all('span', {'style': "box-sizing:border-box;display:block;overflow:hidden;width:initial;height:initial;background:none;opacity:1;border:0;margin:0;padding:0;position:absolute;top:0;left:0;bottom:0;right:0"})))
-        voiceover_fallback = list(map(lambda x: x.text.strip(), self.soup.find_all('span', {'class': 'text-14 leading-7 mt-8px pr-4 line-clamp-3'})))
 
-        lst = str(list(zip(headlines, voiceover_fallback, imgs)))
+        logs = eval(self.bucket.blob('logs/log_article_scrapping.txt').download_as_string().decode())
+        headlines = list(map(lambda x: x[5], logs))
+        fallback_voicovers = list(map(lambda x: x[6], logs))
+
+        lst = str(list(zip(headlines, fallback_voicovers))[:3])
         videobot_blob = self.bucket.blob('logs/log_videobot.txt')
         videobot_blob.upload_from_string(lst, content_type="text/plain; charset=utf-8")
 
@@ -87,6 +88,7 @@ class ArticleScrapper:
         for story in self.all_ground_news_links:
             curr_story = requests.get(story, timeout=10)
             curr_soup = BeautifulSoup(curr_story.content, 'html.parser')
+            self.fallback_voiceovers.append(curr_soup.find('span', {"class": "font-normal text-18 leading-9 break-words"}).text)
             center_article = curr_soup.find('button', string = 'Center')
             if not center_article: center_article = curr_soup.find('button', string = 'Lean Right')
             if not center_article: center_article = curr_soup.find('button', string = 'Far Right')
@@ -139,7 +141,7 @@ class ArticleScrapper:
                 languages.append('n/a')
             self.all_news_content.append(content)
             if link: status_codes.append(resp.status_code)
-        all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content, status_codes, languages, self.headlines)
+        all_content = zip(self.all_ground_news_links, self.article_links, self.all_news_content, status_codes, languages, self.headlines, self.fallback_voiceovers)
 
         prev_news = self.previous_news()
 
