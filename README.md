@@ -83,7 +83,7 @@
          </td>
        </tr>
        <td align="center">
-           <img src=https://img.shields.io/badge/Current_Status-Paused_(Maintenance)-red>
+           <img src=https://img.shields.io/badge/Current_Status-Running-green>
         </td>
         <td align="center">
            <img src=https://img.shields.io/badge/Current_Status-Paused_(Lack_of_funding)-red>
