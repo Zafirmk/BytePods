@@ -92,6 +92,17 @@
 </div>
 
 
+## Short Form Video 🎥
+NewsBytes now publishes short form video trailers for every new podcast episode. Check out NewsBytes on Youtube & Tiktok! (Code coming soon)
+
+
+<a href="https://www.youtube.com/@_NewsBytes" style="margin: 0px 10px; text-decoration: none;">
+  <img src="https://images.squarespace-cdn.com/content/v1/5eeb8d080b8ae21e1d34fe52/1600374524910-C7O3QY09BRJD1FG7V21P/youtube.png" style="width: 155px; height: 57px;">
+</a>
+<a href="https://www.tiktok.com/@_newsbytes" style="margin: 0px 10px; text-decoration: none;">
+  <img src="https://github.com/Zafirmk/BytePods/blob/BytePods/Images/tiktok.png" style="width: 155px; height: 57px;">
+</a>
+
 <!-- CONTACT -->
 ## Contact 📞
 
