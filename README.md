@@ -83,10 +83,10 @@
          </td>
        </tr>
        <td align="center">
-           <img src=https://img.shields.io/badge/Current_Status-Running-green>
+           <img src=https://img.shields.io/badge/Current_Status-Paused-red>
         </td>
         <td align="center">
-           <img src=https://img.shields.io/badge/Current_Status-Paused_(Lack_of_funding)-red>
+           <img src=https://img.shields.io/badge/Current_Status-Paused-red>
         </td>
     </table>
 </div>
